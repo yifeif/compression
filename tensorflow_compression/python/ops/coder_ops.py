@@ -20,8 +20,13 @@ from __future__ import division
 from __future__ import print_function
 
 # Dependency imports
+from tensorflow.contrib.util import loader
+from tensorflow.python.platform import resource_loader
 
-from tensorflow.contrib.coder.python.ops import coder_ops
+
+coder_ops = loader.load_op_library(
+    resource_loader.get_path_to_datafile("_coder_ops.so"))
+
 
 pmf_to_quantized_cdf = coder_ops.pmf_to_quantized_cdf
 range_decode = coder_ops.range_decode

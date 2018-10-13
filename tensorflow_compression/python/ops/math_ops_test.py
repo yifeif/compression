@@ -22,14 +22,14 @@ from __future__ import print_function
 # Dependency imports
 
 import tensorflow as tf
-import tensorflow_compression as tfc
+from tensorflow_compression.python.ops import math_ops
 
 
 class MathTest(tf.test.TestCase):
 
   def _test_upper_bound(self, gradient):
     inputs = tf.placeholder(dtype=tf.float32)
-    outputs = tfc.upper_bound(inputs, 0, gradient=gradient)
+    outputs = math_ops.upper_bound(inputs, 0, gradient=gradient)
     pgrads, = tf.gradients([outputs], [inputs], [tf.ones_like(inputs)])
     ngrads, = tf.gradients([outputs], [inputs], [-tf.ones_like(inputs)])
 
@@ -67,7 +67,7 @@ class MathTest(tf.test.TestCase):
 
   def _test_lower_bound(self, gradient):
     inputs = tf.placeholder(dtype=tf.float32)
-    outputs = tfc.lower_bound(inputs, 0, gradient=gradient)
+    outputs = math_ops.lower_bound(inputs, 0, gradient=gradient)
     pgrads, = tf.gradients([outputs], [inputs], [tf.ones_like(inputs)])
     ngrads, = tf.gradients([outputs], [inputs], [-tf.ones_like(inputs)])
 

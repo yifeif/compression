@@ -27,7 +27,10 @@ import tensorflow as tf
 
 from tensorflow.python.platform import test
 
-import tensorflow_compression as tfc
+from tensorflow_compression.python.layers import initializers
+from tensorflow_compression.python.layers import parameterizers
+from tensorflow_compression.python.layers import signal_conv
+
 
 
 class SignalTest(tf.test.TestCase):
@@ -97,13 +100,13 @@ class SignalTest(tf.test.TestCase):
     # Create kernel array.
     kernel = np.random.randint(16, size=kernel_support + (channels, filters))
     kernel = kernel.astype(np.float32)
-    tf_kernel = tfc.StaticParameterizer(tf.constant_initializer(kernel))
+    tf_kernel = parameterizers.StaticParameterizer(tf.constant_initializer(kernel))
 
     # Run SignalConv* layer.
     layer_class = {
-        3: tfc.SignalConv1D,
-        4: tfc.SignalConv2D,
-        5: tfc.SignalConv3D,
+        3: signal_conv.SignalConv1D,
+        4: signal_conv.SignalConv2D,
+        5: signal_conv.SignalConv3D,
     }[inputs.ndim]
     layer = layer_class(
         filters, kernel_support, corr=corr, strides_down=strides_down,
@@ -146,13 +149,13 @@ class SignalTest(tf.test.TestCase):
 
     # Create kernel array. This is an identity kernel, so the outputs should
     # be equal to the inputs except for up- and downsampling.
-    tf_kernel = tfc.StaticParameterizer(tfc.IdentityInitializer())
+    tf_kernel = parameterizers.StaticParameterizer(initializers.IdentityInitializer())
 
     # Run SignalConv* layer.
     layer_class = {
-        3: tfc.SignalConv1D,
-        4: tfc.SignalConv2D,
-        5: tfc.SignalConv3D,
+        3: signal_conv.SignalConv1D,
+        4: signal_conv.SignalConv2D,
+        5: signal_conv.SignalConv3D,
     }[inputs.ndim]
     layer = layer_class(
         1, kernel_support, corr=corr, strides_down=strides_down,
