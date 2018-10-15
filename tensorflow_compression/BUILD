@@ -239,5 +239,5 @@ py_library(
     deps = [
         ":compression_ops_py",
         ":compression_layers_py",
-    ], 
+    ],
 )
