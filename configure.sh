@@ -9,14 +9,14 @@ function write_action_env_to_bazelrc() {
 }
 
 rm .bazelrc
-if python -c "tensorflow" &> /dev/null; then
-    pip install tensorflow
-else
+if python -c "import tensorflow" &> /dev/null; then
     echo 'using installed tensorflow'
+else
+    pip2 install tensorflow
 fi
 
-TF_CFLAGS=( $(python -c 'import tensorflow as tf; print(" ".join(tf.sysconfig.get_compile_flags()))') )
-TF_LFLAGS=( $(python -c 'import tensorflow as tf; print(" ".join(tf.sysconfig.get_link_flags()))') )
+export TF_CFLAGS=( $(python -c 'import tensorflow as tf; print(" ".join(tf.sysconfig.get_compile_flags()))') )
+export TF_LFLAGS=( $(python -c 'import tensorflow as tf; print(" ".join(tf.sysconfig.get_link_flags()))') )
 
 write_action_env_to_bazelrc "TF_HEADER_DIR" ${TF_CFLAGS:2}
 write_action_env_to_bazelrc "TF_SHARED_LIBRARY_DIR" ${TF_LFLAGS:2}
