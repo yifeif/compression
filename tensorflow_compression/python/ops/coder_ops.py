@@ -20,11 +20,11 @@ from __future__ import division
 from __future__ import print_function
 
 # Dependency imports
-from tensorflow.contrib.util import loader
+from tensorflow.python.framework import load_library
 from tensorflow.python.platform import resource_loader
 
 
-coder_ops = loader.load_op_library(
+coder_ops = load_library.load_op_library(
     resource_loader.get_path_to_datafile("_coder_ops.so"))
 
 
